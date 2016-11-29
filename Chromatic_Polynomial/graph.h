@@ -9,13 +9,16 @@ using namespace std;
 class Graph
 {
 public:
-    Graph();
+    Graph(Node* startNode);
 
-    bool isTree() const;
+    bool isTree(pair<Node*, Node*>* foundCycle = new pair<Node*, Node*>) const;
 
     int grade() const;
+private:
+    Node* start;
+    bool treeRec(Node* current, Node* pre, vector<Node*> visited, pair<Node*, Node*> *found) const;
 
-    set<Node*> Nodes;
+
 };
 
 #endif // GRAPH_H

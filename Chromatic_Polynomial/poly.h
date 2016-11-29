@@ -11,9 +11,11 @@ class Poly
 {
 public:
     Poly();
+    Poly(const int grade, const int value);
 
-    string toString() const;
-    string toString(const string var) const;
+    void copy(Poly* other);
+
+    string toString(const string var = "X") const;
 
     //toFunc() const;
 
@@ -21,6 +23,7 @@ public:
 
     void mult(Poly& factor);
     void add(Poly& term);
+    void pow(int n);
 
     static Poly* getTreePoly(const int grade);
 private:
