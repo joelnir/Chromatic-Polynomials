@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 
 #include "graph.h"
 #include "node.h"
@@ -7,13 +8,11 @@
 
 using namespace std;
 
+Graph* getGraph(string& fileName);
+
 int main()
 {
     /*
-    Poly* a = Poly::getTreePoly(5);
-    cout << a->toString() << endl;
-    */
-
     Node* a = new Node("a");
     Node* b = new Node("b");
     Node* c = new Node("c");
@@ -48,17 +47,38 @@ int main()
     g->contract(edge.first, edge.second);
     cout << g->isTree(&edge) << endl;
     cout << g->grade() << endl;
+    */
+    string graphFile = "g1.txt";
+    Graph* g = getGraph(graphFile);
 }
 
 Poly* getChromaticPoly(Graph* g){
     //TODO implement
 }
 
-Graph* getGraph(string fileName){
-    //TODO implement reading graph from file
+Graph* getGraph(string& fileName){
+    //TODO implement reading graph from filefile:///F:/Repos/chromatic poly/Chromatic_Polynomial/res/g1.txt
 
     /* file content:
      * a b c d e
      * a-b a-c c-d b-d d-e
      */
+
+    ifstream fStream(fileName);
+
+    if(fStream.is_open()){
+        //Read
+        char tmpChar;
+
+        do{
+            tmpChar = fStream.get();
+            cout << tmpChar << endl;
+        }while(true);
+    }
+    else{
+        cout << "no read" << endl;
+        return nullptr;
+    }
+
+    fStream.close();
 }
