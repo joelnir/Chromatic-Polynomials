@@ -92,3 +92,8 @@ void Graph::contract(Node* n1, Node* n2){
 
     delete n2;
 }
+
+void Graph::removeEdge(Node* n1, Node* n2){
+    n1->removeNeighbor(n2);
+    n2->removeNeighbor(n1);
+}

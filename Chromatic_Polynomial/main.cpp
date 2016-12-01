@@ -9,51 +9,71 @@
 using namespace std;
 
 Graph* getGraph(string& fileName);
+Poly* getChromaticPoly(Graph* g);
 
 int main()
 {
-    /*
-    Node* a = new Node("a");
-    Node* b = new Node("b");
-    Node* c = new Node("c");
-    Node* d = new Node("d");
-    Node* e = new Node("e");
+    bool run = true;
+    string fileName;
 
-    a->addNeighbor(b);
-    a->addNeighbor(c);
+    cout << "Chromatic Polynomial Calculator" << endl;
 
-    b->addNeighbor(a);
-    b->addNeighbor(d);
+    while(run){
+        cout << endl <<  "Input filename: ";
+        cin >> fileName;
 
-    c->addNeighbor(d);
-    c->addNeighbor(a);
+        Graph* g = getGraph(fileName);
 
-    d->addNeighbor(c);
-    d->addNeighbor(b);
-    d->addNeighbor(e);
+        if(g == nullptr){
+            //Failed to read file
+            if(fileName == "quit"){
+                run = false;
+            }
+            else{
+                cout << "Could not read file" << endl;
+            }
+        }
+        else{
+            //Calculate
+            Poly* graphP = getChromaticPoly(g);
 
-    e->addNeighbor(d);
+            cout << endl << graphP->toString() << endl;
 
-    Graph* g = new Graph(a);
+            string selection;
+            cout << "Continue?: ";
+            cin >> selection;
 
-    pair<Node*, Node*> edge;
-    cout << g->isTree(&edge) << endl;
-    cout << g->grade() << endl;
-
-    g->contract(edge.first, edge.second);
-    cout << g->isTree(&edge) << endl;
-    cout << g->grade() << endl;
-
-    g->contract(edge.first, edge.second);
-    cout << g->isTree(&edge) << endl;
-    cout << g->grade() << endl;
-    */
-    string graphFile = "g1.txt";
-    Graph* g = getGraph(graphFile);
+            if(selection.at(0) == 'n' || selection.at(0) == 'N'){
+                run = false;
+            }
+        }
+    }
 }
 
 Poly* getChromaticPoly(Graph* g){
-    //TODO implement
+    //check if tree
+    pair<Node*, Node*> cycle;
+
+    if(g->isTree(cycle)){
+        return Poly::getTreePoly(g->grade());
+    }
+    else{
+        Graph* g1 =g->copy();
+        Graph* g2 =g->copy();
+        g1->removeEdge(cycle.first, cycle.second);
+        g2->contract(cycle.first, cycle.second);
+
+        Poly* posPoly = getChromaticPoly(g1);
+        Poly* negPoly = getChromaticPoly(g1);
+
+        negPoly->mult(Poly(0, -1));
+
+        posPoly->add(*negPoly);
+
+        return posPoly;
+    }
+
+    return Poly::getTreePoly(1);
 }
 
 Graph* getGraph(string& fileName){
@@ -69,16 +89,42 @@ Graph* getGraph(string& fileName){
     if(fStream.is_open()){
         //Read
         char tmpChar;
+        map<char, Node*> nodeList;
 
         do{
             tmpChar = fStream.get();
-            cout << tmpChar << endl;
-        }while(true);
+
+            //Make Node
+            Node* newNode = new Node(string(1, tmpChar));
+            nodeList.insert(pair<char, Node*>(tmpChar, newNode));
+
+            tmpChar = fStream.get();
+
+        }while(tmpChar != ';');
+
+        fStream.get();
+
+        char endChar;
+        do{
+            char c1 = fStream.get();
+            fStream.get();
+            char c2 = fStream.get();
+
+            //Make connection
+            Node* n1 = nodeList.at(c1);
+            Node* n2 = nodeList.at(c2);
+
+            n1->addNeighbor(n2);
+            n2->addNeighbor(n1);
+
+            endChar = fStream.get();
+        }while(endChar != ';');
+
+        fStream.close();
+
+        return new Graph(nodeList.begin()->second);
     }
     else{
-        cout << "no read" << endl;
         return nullptr;
     }
-
-    fStream.close();
 }

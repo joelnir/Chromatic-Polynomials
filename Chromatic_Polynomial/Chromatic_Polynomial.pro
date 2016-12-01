@@ -25,7 +25,6 @@ defineTest(copyToDestdir) {
             QMAKE_POST_LINK += cp -r '"'$$FILE'"' '"'$$DDIR'"' $$escape_expand(\\n\\t)
         }
         win32 {
-            warning("1")
             QMAKE_POST_LINK += $$quote(xcopy '"'$$FILE'"' '"'$$DDIR'"' /e /y $$escape_expand(\\n\\t))
         }
     }
@@ -45,3 +44,8 @@ macx {
 #
 # Delete build directory to force re-moving files
 #
+
+DISTFILES += \
+    res/g1.txt \
+    res/g2.txt \
+    res/g3.txt

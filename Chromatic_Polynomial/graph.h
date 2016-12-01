@@ -18,6 +18,7 @@ public:
     bool isTree(pair<Node*, Node*>* foundCycle = new pair<Node*, Node*>) const;
 
     void contract(Node* n1, Node* n2);
+    void removeEdge(Node* n1, Node* n2);
 
     int grade() const;
 private:
