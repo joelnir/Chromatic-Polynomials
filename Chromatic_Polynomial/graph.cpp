@@ -18,7 +18,7 @@ int Graph::grade() const{
     return visited.size();
 }
 
-bool Graph::treeRec(Node* current, Node* pre, vector<Node*>* visited, pair<Node*, Node*> *found) const{
+bool Graph::treeRec(Node* current, Node* pre, vector<Node*>* visited, pair<Node*, Node*>* found) const{
     if(current->neighbors.empty()){
         //Single Node
         return true;

@@ -48,4 +48,6 @@ macx {
 DISTFILES += \
     res/g1.txt \
     res/g2.txt \
-    res/g3.txt
+    res/g3.txt \
+    res/g4.txt \
+    res/g5.txt

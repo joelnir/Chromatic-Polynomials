@@ -46,27 +46,35 @@ int main()
             if(selection.at(0) == 'n' || selection.at(0) == 'N'){
                 run = false;
             }
+
+            //TODO Fix memory leaks
         }
     }
 }
 
 Poly* getChromaticPoly(Graph* g){
     //check if tree
-    pair<Node*, Node*> cycle;
+    pair<Node*, Node*>* cycle = new pair<Node*, Node*>(nullptr, nullptr);
 
-    if(g->isTree(cycle)){
+    Graph* g1 = g->copy();
+
+    if(g1->isTree(cycle)){
         return Poly::getTreePoly(g->grade());
     }
     else{
-        Graph* g1 =g->copy();
-        Graph* g2 =g->copy();
-        g1->removeEdge(cycle.first, cycle.second);
-        g2->contract(cycle.first, cycle.second);
+        g1->removeEdge(cycle->first, cycle->second);
+
+        //Do same, but contract for g2
+        Graph* g2 = g->copy();
+        g2->isTree(cycle);
+        g2->contract(cycle->first, cycle->second);
 
         Poly* posPoly = getChromaticPoly(g1);
-        Poly* negPoly = getChromaticPoly(g1);
+        Poly* negPoly = getChromaticPoly(g2);
 
-        negPoly->mult(Poly(0, -1));
+        Poly negOne = Poly(0, -1);
+
+        negPoly->mult(negOne);
 
         posPoly->add(*negPoly);
 
@@ -77,9 +85,7 @@ Poly* getChromaticPoly(Graph* g){
 }
 
 Graph* getGraph(string& fileName){
-    //TODO implement reading graph from filefile:///F:/Repos/chromatic poly/Chromatic_Polynomial/res/g1.txt
-
-    /* file content:
+    /* file content example:
      * a b c d e
      * a-b a-c c-d b-d d-e
      */

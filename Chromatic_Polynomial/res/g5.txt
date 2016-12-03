@@ -1,0 +1,2 @@
+a b c d e f g h i j;
+a-b b-f a-f f-c f-d f-e f-g f-h g-h g-i i-h h-j i-j c-e;

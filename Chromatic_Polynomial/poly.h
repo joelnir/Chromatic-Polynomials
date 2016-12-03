@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <functional>
 
 using namespace std;
 
@@ -16,6 +17,8 @@ public:
     void copy(Poly* other);
 
     string toString(const string var = "X") const;
+
+    function<int (int)> getFuncLambda() const;
 
     //toFunc() const;
 

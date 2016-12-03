@@ -1,5 +1,6 @@
 #include "poly.h"
 #include <sstream>
+#include <math.h>
 
 Poly::Poly()
 {
@@ -109,4 +110,17 @@ Poly* Poly::getTreePoly(const int grade){
     tree->mult(second);
 
     return tree;
+}
+
+function<int (int)> Poly::getFuncLambda() const{
+    return [&](int x){
+        int sum = 0;
+
+        for(auto value: values){
+            //TODO finish this
+            //sum += value.second * ::pow(x, value.first);
+        }
+
+        return sum;
+    };
 }
