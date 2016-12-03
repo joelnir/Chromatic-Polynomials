@@ -14,40 +14,72 @@ Poly* getChromaticPoly(Graph* g);
 int main()
 {
     bool run = true;
-    string fileName;
+    int selection;
 
-    cout << "Chromatic Polynomial Calculator" << endl;
+    Poly* p = nullptr;
 
     while(run){
-        cout << endl <<  "Input filename: ";
-        cin >> fileName;
+        cout << endl << "Chromatic Polynomial Calculator" << endl;
+        cout << "1. Read graph from file" << endl;
+        cout << "2. Show chromatic polynomial" << endl;
+        cout << "3. Calculate chromatic number" << endl;
+        cout << "4. Quit" << endl;
+        cout << "Input: ";
 
-        Graph* g = getGraph(fileName);
+        cin >> selection;
 
-        if(g == nullptr){
-            //Failed to read file
-            if(fileName == "quit"){
+        switch(selection){
+            case 1:{
+                //Read graph fromn file
+                string fileName;
+                Graph* g;
+                do{
+                    cout << "Input filename: ";
+                    cin >> fileName;
+
+                    g = getGraph(fileName);
+
+                    if(g == nullptr){
+                        //Failed to read file
+                        cout << "Could not read file" << endl;
+                    }
+                }while(g == nullptr);
+
+                //Calculate
+                delete p;
+                p = getChromaticPoly(g);
+
+                delete g;
+            }break;
+            case 2:{
+                //Show chromatic poly
+                if(p == nullptr){
+                    cout << "No graph loaded" << endl;
+                }
+                else{
+                    cout << p->toString() << endl;
+                }
+            }break;
+            case 3:{
+                //Calculate number
+                if(p == nullptr){
+                    cout << "No graph loaded" << endl;
+                }
+                else{
+                    int colors;
+
+                    cout << "Colors: ";
+                    cin >> colors;
+
+                    auto func = p->getFuncLambda();
+
+                    cout << "Chromatic Number: " << func(colors) << endl;
+                }
+            }break;
+            case 4:{
+                //Quit
                 run = false;
-            }
-            else{
-                cout << "Could not read file" << endl;
-            }
-        }
-        else{
-            //Calculate
-            Poly* graphP = getChromaticPoly(g);
-
-            cout << endl << graphP->toString() << endl;
-
-            string selection;
-            cout << "Continue?: ";
-            cin >> selection;
-
-            if(selection.at(0) == 'n' || selection.at(0) == 'N'){
-                run = false;
-            }
-
-            //TODO Fix memory leaks
+            }break;
         }
     }
 }

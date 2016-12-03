@@ -13,6 +13,8 @@ class Graph
 public:
     Graph(Node* startNode);
 
+    ~Graph();
+
     Graph* copy() const;
 
     bool isTree(pair<Node*, Node*>* foundCycle = new pair<Node*, Node*>) const;

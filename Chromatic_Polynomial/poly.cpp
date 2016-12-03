@@ -1,6 +1,6 @@
 #include "poly.h"
 #include <sstream>
-#include <math.h>
+#include <cmath>
 
 Poly::Poly()
 {
@@ -117,10 +117,11 @@ function<int (int)> Poly::getFuncLambda() const{
         int sum = 0;
 
         for(auto value: values){
-            //TODO finish this
-            //sum += value.second * ::pow(x, value.first);
+            sum += value.second * std::pow(x, value.first);
         }
 
         return sum;
     };
 }
+
+

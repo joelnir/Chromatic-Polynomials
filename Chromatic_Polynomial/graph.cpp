@@ -97,3 +97,14 @@ void Graph::removeEdge(Node* n1, Node* n2){
     n1->removeNeighbor(n2);
     n2->removeNeighbor(n1);
 }
+
+Graph::~Graph(){
+    vector<Node*> visited;
+    countHelp(start, &visited);
+
+    for(Node* n : visited){
+        delete n;
+    }
+}
+
+
